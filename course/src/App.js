@@ -9,36 +9,31 @@ class App extends Component {
 
   state = {
     persons: [
-      {name: 'Max', age: 12}, 
-      {name: 'Manu', age: 23}, 
-      {name: 'Stephanie', age: 31} 
+      {id: 'd2asd', name: 'Max', age: 12}, 
+      {id: 'asd12', name: 'Manu', age: 23}, 
+      {id: 'fasty', name: 'Stephanie', age: 31} 
     ],
     otherState: "some other state",
     showPersons: true
   }
 
-  switchNameHandler = (newName) => {
-    this.setState({   
-      persons: [
-        {name: newName, age: 14}, 
-        {name: 'New Manu', age: 44}, 
-        {name: 'New Stephanie', age: 561} 
-      ]
-    }
-    )
+
+
+  changeNameHandler = (newName, id) => {
+    const personIndex = this.state.persons.findIndex(element => element.id === id);
+    const person = {...this.state.persons[personIndex]};
+    person.name = newName;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+    this.setState({persons: persons});
+    
   }
 
-
-  changeNameHandler = (event) => {
-
-    this.setState({   
-      persons: [
-        {name: 'Max', age: 14}, 
-        {name: event.target.value, age: 44}, 
-        {name: 'New Stephanie', age: 561} 
-      ]
-    }
-    )
+  deletePersonHandler = (personIndex) => {
+    const persons = this.state.persons;
+    persons.splice(personIndex, 1);
+    this.setState({persons: persons});
   }
 
   togglePersonHandler = () =>{
@@ -55,12 +50,16 @@ class App extends Component {
 
     if( this.state.showPersons ){
       persons = (
-      <div>    
+      <div className='PersonWrapper'>    
 
-        {this.state.persons.map( person =>{
-          return (<Person 
+        {this.state.persons.map( (person, personIndex) =>{
+          return (<Person
+          key={person.id}
+          className = "Person" 
           name={person.name} 
           age={person.age}
+          click={this.deletePersonHandler.bind(personIndex)}
+          changed={(event) => {this.changeNameHandler(event.target.value, person.id)}}
           />);
         })}    
       </div>);
