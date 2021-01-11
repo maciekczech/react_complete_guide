@@ -30,3 +30,27 @@
 .bold{
   font-weight: bold;
 }
+
+.App button{
+  justify-content: center;
+  background-color: green;
+  border: none;
+  color:white;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.App button:hover {
+  background-color: lightgreen;
+  color: black;
+}
+
+.App button.Clicked{
+  background-color: red;
+}
+
+.App button.Clicked:hover {
+  background-color: salmon;
+}

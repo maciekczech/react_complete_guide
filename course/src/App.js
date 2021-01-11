@@ -1,25 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
-import styled from 'styled-components'
+import classes from './App.css';
 import Person from './Person/Person';
 import './Person/Person.css';
 
-
-const StyledButton = styled.button`
-  justify-content: center;
-  background-color: ${ props => props.alt ? 'green' : 'red'};
-  border: none;
-  color: ${ props => props.alt ? 'white' : 'black'};
-  padding: 16px 32px;
-  text-decoration: none;
-  margin: 4px 2px;
-  cursor: pointer;
-  
-  &:hover {
-    background-color: ${ props => props.alt ? 'lightgreen' : 'salmon'};
-    color: black;
-  }
-`;
 
 class App extends Component {
 
@@ -63,6 +46,7 @@ class App extends Component {
   render(){
 
     let persons = null;
+    let buttonClasses = '';
 
     if( this.state.showPersons ){
       persons = (
@@ -80,21 +64,23 @@ class App extends Component {
         })}    
       </div>);
 
+    buttonClasses = classes.Clicked;
     }
 
-    let classes = [];
 
-    if(this.state.persons.length <= 2) { classes.push('red');   } // classes = ['red']
-    if(this.state.persons.length <= 1) { classes.push('bold');  } // classes = ['red', 'bold']
+    let assignedClasses = [];
+
+    if(this.state.persons.length <= 2) { assignedClasses.push(classes.red);   } // classes = ['red']
+    if(this.state.persons.length <= 1) { assignedClasses.push(classes.bold);  } // classes = ['red', 'bold']
 
     return (
-        <div className="App">
-          <p className={classes.join(' ')}> This is really working! </p>
-          <StyledButton 
-          alt={this.state.showPersons}
+        <div className={classes.App}>
+          <p className={assignedClasses.join(' ')}> This is really working! </p>
+          <button 
+          className={buttonClasses}
           onClick={this.togglePersonHandler}>
             Hide everything
-          </StyledButton>
+          </button>
           {persons}
         </div>
       
