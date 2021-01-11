@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Radium, {StyleRoot} from 'radium'
 import './App.css';
 import Person from './Person/Person';
 import './Person/Person.css';
@@ -46,6 +46,21 @@ class App extends Component {
   
   render(){
 
+    const buttonStyle = {
+      justifyContent: "center",
+      backgroundColor: "red",
+      border: "none",
+      color: "white",
+      padding: "16px 32px",
+      textDecoration: "none",
+      margin: "4px 2px",
+      cursor: "pointer",
+      ':hover': {
+        backgroundColor: 'salmon',
+        color: 'black'
+      }
+    }
+
     let persons = null;
 
     if( this.state.showPersons ){
@@ -63,22 +78,37 @@ class App extends Component {
           />);
         })}    
       </div>);
+
+        buttonStyle.backgroundColor = "#4CAF50"
+        buttonStyle[':hover'] = {
+          backgroundColor: 'lightgreen',
+          color: 'black'
+                 
+        }
+
     }
 
+    let classes = [];
 
+    if(this.state.persons.length <= 2) { classes.push('red');   } // classes = ['red']
+    if(this.state.persons.length <= 1) { classes.push('bold');  } // classes = ['red', 'bold']
 
     return (
-      <div className="App">
-        <button 
-        className = "Button"
-        onClick={this.togglePersonHandler}>
-          Hide everything
-        </button>
-        {persons}
-      </div>
+      <StyleRoot>
+        <div className="App">
+          <p className={classes.join(' ')}> This is really working! </p>
+          <button 
+          style={buttonStyle}
+          onClick={this.togglePersonHandler}>
+            Hide everything
+          </button>
+          {persons}
+        </div>
+      </StyleRoot>
+      
     );
   }
 
 }
 
-export default App;
+export default Radium(App);
