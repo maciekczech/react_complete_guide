@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
-import Radium, {StyleRoot} from 'radium'
 import './App.css';
+import styled from 'styled-components'
 import Person from './Person/Person';
 import './Person/Person.css';
 
+
+const StyledButton = styled.button`
+  justify-content: center;
+  background-color: ${ props => props.alt ? 'green' : 'red'};
+  border: none;
+  color: ${ props => props.alt ? 'white' : 'black'};
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: ${ props => props.alt ? 'lightgreen' : 'salmon'};
+    color: black;
+  }
+`;
 
 class App extends Component {
 
@@ -46,21 +62,6 @@ class App extends Component {
   
   render(){
 
-    const buttonStyle = {
-      justifyContent: "center",
-      backgroundColor: "red",
-      border: "none",
-      color: "white",
-      padding: "16px 32px",
-      textDecoration: "none",
-      margin: "4px 2px",
-      cursor: "pointer",
-      ':hover': {
-        backgroundColor: 'salmon',
-        color: 'black'
-      }
-    }
-
     let persons = null;
 
     if( this.state.showPersons ){
@@ -79,13 +80,6 @@ class App extends Component {
         })}    
       </div>);
 
-        buttonStyle.backgroundColor = "#4CAF50"
-        buttonStyle[':hover'] = {
-          backgroundColor: 'lightgreen',
-          color: 'black'
-                 
-        }
-
     }
 
     let classes = [];
@@ -94,21 +88,19 @@ class App extends Component {
     if(this.state.persons.length <= 1) { classes.push('bold');  } // classes = ['red', 'bold']
 
     return (
-      <StyleRoot>
         <div className="App">
           <p className={classes.join(' ')}> This is really working! </p>
-          <button 
-          style={buttonStyle}
+          <StyledButton 
+          alt={this.state.showPersons}
           onClick={this.togglePersonHandler}>
             Hide everything
-          </button>
+          </StyledButton>
           {persons}
         </div>
-      </StyleRoot>
       
     );
   }
 
 }
 
-export default Radium(App);
+export default App;
