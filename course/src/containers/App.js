@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
-import Person from './Person/Person';
-import './Person/Person.css';
+import PersonsList from '../components/PersonsList/PersonsList';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 
 class App extends Component {
@@ -16,8 +15,6 @@ class App extends Component {
     otherState: "some other state",
     showPersons: true
   }
-
-
 
   changeNameHandler = (newName, id) => {
     const personIndex = this.state.persons.findIndex(element => element.id === id);
@@ -47,43 +44,25 @@ class App extends Component {
   render(){
 
     let persons = null;
-    let buttonClasses = '';
 
     if( this.state.showPersons ){
       persons = (
       <div className='PersonWrapper'>    
-
-        {this.state.persons.map( (person, personIndex) =>{
-          return (
-            <ErrorBoundary key={person.id}>
-              <Person
-                className = "Person" 
-                name={person.name} 
-                age={person.age}
-                click={this.deletePersonHandler.bind(personIndex)}
-                changed={(event) => {this.changeNameHandler(event.target.value, person.id)}}
-              />
-            </ErrorBoundary>);
-          })}    
+        <PersonsList
+          persons={this.state.persons}
+          clicked={this.deletePersonHandler}
+          changed={this.changeNameHandler}
+        />
       </div>);
-
-    buttonClasses = classes.Clicked;
     }
-
-
-    let assignedClasses = [];
-
-    if(this.state.persons.length <= 2) { assignedClasses.push(classes.red);   } // classes = ['red']
-    if(this.state.persons.length <= 1) { assignedClasses.push(classes.bold);  } // classes = ['red', 'bold']
-
+   
     return (
         <div className={classes.App}>
-          <p className={assignedClasses.join(' ')}> This is really working! </p>
-          <button 
-          className={buttonClasses}
-          onClick={this.togglePersonHandler}>
-            Hide everything
-          </button>
+          <Cockpit
+          personsListLength={this.state.persons.length}
+          showPersons={this.state.showPersons}
+          click={this.togglePersonHandler}
+          />
           {persons}
         </div>
       
