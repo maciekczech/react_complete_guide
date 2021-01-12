@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classes from './App.css';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 import Person from './Person/Person';
 import './Person/Person.css';
 
@@ -53,15 +54,17 @@ class App extends Component {
       <div className='PersonWrapper'>    
 
         {this.state.persons.map( (person, personIndex) =>{
-          return (<Person
-          key={person.id}
-          className = "Person" 
-          name={person.name} 
-          age={person.age}
-          click={this.deletePersonHandler.bind(personIndex)}
-          changed={(event) => {this.changeNameHandler(event.target.value, person.id)}}
-          />);
-        })}    
+          return (
+            <ErrorBoundary key={person.id}>
+              <Person
+                className = "Person" 
+                name={person.name} 
+                age={person.age}
+                click={this.deletePersonHandler.bind(personIndex)}
+                changed={(event) => {this.changeNameHandler(event.target.value, person.id)}}
+              />
+            </ErrorBoundary>);
+          })}    
       </div>);
 
     buttonClasses = classes.Clicked;
