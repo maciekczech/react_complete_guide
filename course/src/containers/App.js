@@ -9,16 +9,15 @@ class App extends Component {
   constructor(props){
     super(props);
     console.log('[App.js] constructor');
-  }
-
-  state = {
-    persons: [
-      {id: 'd2asd', name: 'Max', age: 12}, 
-      {id: 'asd12', name: 'Manu', age: 23}, 
-      {id: 'fasty', name: 'Stephanie', age: 31} 
-    ],
-    otherState: "some other state",
-    showPersons: false
+    this.state = {
+      persons: [
+        { id: 'd2asd', name: 'Max', age: 12 },
+        { id: 'asd12', name: 'Manu', age: 23 },
+        { id: 'fasty', name: 'Stephanie', age: 31 }
+      ],
+      otherState: "some other state",
+      showPersons: false
+    }
   }
 
   static getDerivedStateFromProps(props, state){
@@ -84,6 +83,7 @@ class App extends Component {
         <div className={classes.App}>
           <Cockpit
           personsListLength={this.state.persons.length}
+          persons={this.state.persons}
           showPersons={this.state.showPersons}
           click={this.togglePersonHandler}
           />

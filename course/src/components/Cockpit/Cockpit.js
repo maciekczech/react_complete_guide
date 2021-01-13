@@ -1,7 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import classes from './Cockpit.css'
 
 const cockpit = props => {
+
+    useEffect(() => {
+        console.log("[Cockpit.js] useEffect on persons change call...");
+        setTimeout(() => {
+            alert('Saved some data to the cloud');
+        }, 1000);
+    }, [props.persons]); //gets triggered only on a persons change
+
+    useEffect(() => {
+        console.log("[Cockpit.js] useEffect initial render call...");
+        setTimeout(() => {
+            alert('Rendered Persons for the first time');
+        }, 1000);
+    }, []); //get triggered only on initial render
 
 
     let paragraphAssignedClasses = [];
