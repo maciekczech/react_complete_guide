@@ -3,6 +3,7 @@ import classes from './Cockpit.css'
 
 const cockpit = props => {
 
+
     let paragraphAssignedClasses = [];
     let buttonAssignedClasses = '';
 

@@ -18,13 +18,14 @@ class App extends Component {
       {id: 'fasty', name: 'Stephanie', age: 31} 
     ],
     otherState: "some other state",
-    showPersons: true
+    showPersons: false
   }
 
   static getDerivedStateFromProps(props, state){
     console.log('[App.js] getDerivedStateFromProps call');
     return state;
   }
+
 
   changeNameHandler = (newName, id) => {
     const personIndex = this.state.persons.findIndex(element => element.id === id);
@@ -53,6 +54,15 @@ class App extends Component {
   
   componentDidMount(){
     console.log('[App.js] componentDidMount call');
+  }
+
+  shouldComponentUpdate(){
+    console.log('[App.js] shouldComponentUpdate call');
+    return true;
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    console.log('[App.js] componentDidUpdate call');
   }
 
   render(){
