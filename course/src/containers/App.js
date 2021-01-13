@@ -70,14 +70,12 @@ class App extends Component {
     let persons = null;
 
     if( this.state.showPersons ){
-      persons = (
-      <div className='PersonWrapper'>    
+      persons = (   
         <PersonsList
           persons={this.state.persons}
           clicked={this.deletePersonHandler}
           changed={this.changeNameHandler}
-        />
-      </div>);
+        />);
     }
    
     return (
