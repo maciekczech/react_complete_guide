@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Person from './Person/Person'
 
-class PersonsList extends Component {
+class PersonsList extends PureComponent {
 
     state = {}
 
@@ -10,10 +10,17 @@ class PersonsList extends Component {
         return state;
     }
 
-    shouldComponentUpdate(nextProps, nextState){
-        console.log('[PersonsList.js] shouldComponentUpdate call.. returning true');
-        return true;
-    }
+    //PureComponent checks whether all of the NextProps fields match current props
+    //and rerenders component based on that piece of information
+/*     shouldComponentUpdate(nextProps, nextState){
+        if(this.props.persons === nextProps.persons){
+            console.log('[PersonsList.js] shouldComponentUpdate call.. returning false');
+            return false;
+        }else{
+            console.log('[PersonsList.js] shouldComponentUpdate call.. returning true');
+            return true;
+        }
+    } */
 
     getSnapshotBeforeUpdate(prevProps, prevState){
         console.log('[PersonsList.js] getSnapshotBeforeUpdate call.. returning true');

@@ -5,17 +5,27 @@ const cockpit = props => {
 
     useEffect(() => {
         console.log("[Cockpit.js] useEffect on persons change call...");
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             alert('Saved some data to the cloud');
         }, 1000);
+        return() => {
+            clearTimeout(timer);
+        }
     }, [props.persons]); //gets triggered only on a persons change
 
     useEffect(() => {
         console.log("[Cockpit.js] useEffect initial render call...");
-        setTimeout(() => {
-            alert('Rendered Persons for the first time');
-        }, 1000);
+        return () => {
+            console.log('[Cockpit.js] Clean up work in useEffect (only after the cockpit is removed)')
+        }
     }, []); //get triggered only on initial render
+
+    useEffect( () => {
+        console.log("[Cockpit.js] useEffect 2nd call...");
+        return () => {
+            console.log('[Cockpit.js] Clean up work in 2nd useEffect');
+        }
+    });
 
 
     let paragraphAssignedClasses = [];
@@ -46,4 +56,4 @@ const cockpit = props => {
     );
 }
 
-export default cockpit;
+export default React.memo(cockpit);
