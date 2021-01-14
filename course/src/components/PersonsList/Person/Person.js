@@ -12,14 +12,12 @@ class Person extends Component {
         super(props);
         console.log('[Person.js] Constructing Person...');
         this.state = {}
-    }
-    static getDerivedStateFromProps(state, props){
-        console.log('[Person.js] getDerivedStateFromProps call..');
-        return state;
+        this.inputElementRef = React.createRef();
     }
 
     componentDidMount(){
         console.log('[Person.js] componentDidMount call..');
+        this.inputElementRef.current.focus();
     }
 
     render(){
@@ -28,7 +26,7 @@ class Person extends Component {
             <Auxiliary>
                 <p onClick={this.props.click}> I'm a {this.props.name} and I am {this.props.age} years old </p>
                 <p>{this.props.children}</p>
-                <input onChange={this.props.changed} value={this.props.name}></input>
+                <input ref={this.inputElementRef} onChange={this.props.changed} value={this.props.name}></input>
             </Auxiliary>
         );
     }
