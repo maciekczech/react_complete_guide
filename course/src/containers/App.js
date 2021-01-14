@@ -19,7 +19,8 @@ class App extends Component {
       ],
       otherState: "some other state",
       showPersons: false,
-      showCockpit: true
+      showCockpit: true,
+      changeCounter: 0
     }
   }
 
@@ -36,9 +37,20 @@ class App extends Component {
 
     const persons = [...this.state.persons];
     persons[personIndex] = person;
-    this.setState({persons: persons});
+/*  this.setState({
+      persons: persons, 
+      changeCounter: this.state.counter + 1}
+      );
+    //this.state is not guaranted to be the latest previous state
+    //as react performs setState() call async  */
     
-  }
+    this.setState((prevState, props) => { //that way we can make sure that we get a previous state value
+      return { 
+        persons: persons, 
+        changeCounter: prevState.changeCounter + 1 
+      };
+    });
+  };
 
   deletePersonHandler = (personIndex) => {
     const persons = this.state.persons;
