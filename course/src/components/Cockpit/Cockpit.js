@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from "react";
 import classes from './Cockpit.css'
+import AuthContext from '../../context/auth-context'
 
 const cockpit = props => {
 
@@ -55,12 +56,16 @@ const cockpit = props => {
                 onClick={props.click}
                 >
                 Hide everything
-            </button>   
-            <button
-                onClick={props.authenticate}
-            >
-                Log in!
-            </button>     
+            </button> 
+            <AuthContext.Consumer>
+                {(context) => (
+                    <button
+                        onClick={context.authenticateUserHandler}
+                    >
+                        Log in!
+                    </button> 
+                )}
+            </AuthContext.Consumer>      
         </div>
     );
 }

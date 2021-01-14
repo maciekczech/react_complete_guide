@@ -3,6 +3,7 @@ import classes from './Person.css'
 import withClass from '../../../hoc/withClassF'
 import Auxiliary from '../../../hoc/Auxiliary'
 import PropTypes from 'prop-types'
+import AuthContext from '../../../context/auth-context'
 
 
 
@@ -24,14 +25,16 @@ class Person extends Component {
         console.log('[Person.js] person rendering...');
         return (
             <Auxiliary>
-                {this.props.auth ? <p> Authenticated </p> : <p> Please Log in</p>}
+                <AuthContext.Consumer>
+                    {(context) => context.authenticated ? <p> Authenticated </p> : <p> Please Log in</p> }
+                </AuthContext.Consumer>
                 <p onClick={this.props.click}> I'm a {this.props.name} and I am {this.props.age} years old </p>
                 <p>{this.props.children}</p>
                 <input ref={this.inputElementRef} onChange={this.props.changed} value={this.props.name}></input>
             </Auxiliary>
+            
         );
     }
-
 }
 
 Person.propTypes = {

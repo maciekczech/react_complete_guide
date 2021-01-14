@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import Person from './Person/Person'
 
+
 class PersonsList extends PureComponent {
 
     state = {}
@@ -33,17 +34,17 @@ class PersonsList extends PureComponent {
 
     render(){
 
-    return (this.props.persons.map((person, personIndex) => {
-        return (
-            <Person
-                auth={this.props.isAuthenticated}
-                key={person.id}
-                className="Person"
-                name={person.name}
-                age={person.age}
-                click={this.props.clicked.bind(personIndex)}
-                changed={(event) => { this.props.changed(event.target.value, person.id); }}
-            />);
+    return ( this.props.persons.map((person, personIndex) => {
+            return (
+                    <Person
+                        key={person.id}
+                        className="Person"
+                        name={person.name}
+                        age={person.age}
+                        click={this.props.clicked.bind(personIndex)}
+                        changed={(event) => { this.props.changed(event.target.value, person.id); }}
+                    />
+            );
         }));
 
     }

@@ -4,6 +4,7 @@ import PersonsList from '../components/PersonsList/PersonsList';
 import Cockpit from '../components/Cockpit/Cockpit';
 import Auxiliary from '../hoc/Auxiliary'
 import withClass from '../hoc/withClassF'
+import AuthContext from '../context/auth-context'
 
 
 class App extends Component {
@@ -102,13 +103,20 @@ class App extends Component {
     return (
         <Auxiliary >
         <button onClick={() => { this.setState({showCockpit: !this.state.showCockpit})}}> hide Cockpit </button>
-          {this.state.showCockpit ? <Cockpit
-          personsListLength={this.state.persons.length}
-          showPersons={this.state.showPersons}
-          click={this.togglePersonHandler}
-          authenticate={this.authenticateUserHandler}
-          /> : null}
-          {persons}
+          
+          <AuthContext.Provider
+            value={{
+              authenticated: this.state.authenticated,
+              authenticateUserHandler: this.authenticateUserHandler
+            }}
+            >
+            {this.state.showCockpit ? <Cockpit
+            personsListLength={this.state.persons.length}
+            showPersons={this.state.showPersons}
+            click={this.togglePersonHandler}
+            /> : null}
+            {persons}
+          </AuthContext.Provider>
         </Auxiliary >
       
     );
