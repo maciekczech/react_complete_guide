@@ -1,7 +1,9 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import classes from './Cockpit.css'
 
 const cockpit = props => {
+
+    const toggleButtonRef = useRef(null);
 
     useEffect(() => {
         console.log("[Cockpit.js] useEffect on persons change call...");
@@ -15,6 +17,7 @@ const cockpit = props => {
 
     useEffect(() => {
         console.log("[Cockpit.js] useEffect initial render call...");
+        toggleButtonRef.current.click();
         return () => {
             console.log('[Cockpit.js] Clean up work in useEffect (only after the cockpit is removed)')
         }
@@ -46,14 +49,20 @@ const cockpit = props => {
                 >
                 This is really working!
             </p>
-            <button 
+            <button
+                ref={toggleButtonRef} 
                 className={buttonAssignedClasses}
                 onClick={props.click}
                 >
                 Hide everything
-            </button>        
+            </button>   
+            <button
+                onClick={props.authenticate}
+            >
+                Log in!
+            </button>     
         </div>
     );
 }
 
-export default React.memo(cockpit);
+export default cockpit;

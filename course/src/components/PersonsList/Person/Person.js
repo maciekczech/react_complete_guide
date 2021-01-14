@@ -24,6 +24,7 @@ class Person extends Component {
         console.log('[Person.js] person rendering...');
         return (
             <Auxiliary>
+                {this.props.auth ? <p> Authenticated </p> : <p> Please Log in</p>}
                 <p onClick={this.props.click}> I'm a {this.props.name} and I am {this.props.age} years old </p>
                 <p>{this.props.children}</p>
                 <input ref={this.inputElementRef} onChange={this.props.changed} value={this.props.name}></input>

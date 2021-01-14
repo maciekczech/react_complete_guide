@@ -36,6 +36,7 @@ class PersonsList extends PureComponent {
     return (this.props.persons.map((person, personIndex) => {
         return (
             <Person
+                auth={this.props.isAuthenticated}
                 key={person.id}
                 className="Person"
                 name={person.name}
