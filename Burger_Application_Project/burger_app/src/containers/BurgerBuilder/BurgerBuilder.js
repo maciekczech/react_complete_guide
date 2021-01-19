@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
-import Auxiliary from './../../hoc/Auxiliary'
-import Burger from './../../components/Burger/Burger'
-import BuildControls from './../../components/Burger/BuildControls/BuildControls'
+import Auxiliary from './../../hoc/Auxiliary';
+import Burger from './../../components/Burger/Burger';
+import BuildControls from './../../components/Burger/BuildControls/BuildControls';
+import OrderSummary from './../../components/Burger/OrderSummary/OrderSummary';
+import Modal from './../../components/UI/Modal/Modal'
+
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -22,6 +25,7 @@ class BurgerBuilder extends Component{
             },
             totalPrice: 4,
             purchasable: false,
+            purchasing: false,
         };
     }
 
@@ -56,6 +60,10 @@ class BurgerBuilder extends Component{
         this.setState({purchasable: newPurchasableState});
     };
 
+    purchaseHandler = () => {
+        this.setState({purchasing: true});
+    }
+ 
     render(){
         const disabledButtonsInfo = {...this.state.ingredients}
         for (let key in disabledButtonsInfo) {
@@ -64,12 +72,16 @@ class BurgerBuilder extends Component{
 
         return (
             <Auxiliary>
+                <Modal visible={this.state.purchasing}>
+                    <OrderSummary ingredients={this.state.ingredients}/>
+                </Modal>
                 <Burger ingredients={this.state.ingredients}></Burger>
                 <BuildControls
                     addIngredient={this.addIngredientHandler}
                     removeIngredient={this.removeIngredientHandler}
                     disabledButtonsInfo={disabledButtonsInfo}
                     currentPrice={this.state.totalPrice}
+                    ordered={this.purchaseHandler}
                     disableOrderButton={!this.state.purchasable}
                 />
             </Auxiliary>
