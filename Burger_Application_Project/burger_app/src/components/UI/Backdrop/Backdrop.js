@@ -4,9 +4,7 @@ import classes from './Backdrop.module.css'
 
 const backdrop = props => {
     return (
-        <div>
-            {props.children}
-        </div>
+        props.visible ? <div className={classes.Backdrop} onClick={props.hideModalAndBackdrop} ></div> : null
     );
 };
 
