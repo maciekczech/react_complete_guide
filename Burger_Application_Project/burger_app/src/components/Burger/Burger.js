@@ -4,7 +4,7 @@ import classes from './Burger.module.css'
 
 const burger = props => {
 
-    const transformedIngredients = Object.keys(props.ingredients).map( (currentIngredient) => {
+    let transformedIngredients = Object.keys(props.ingredients).map( (currentIngredient) => {
         return [...Array(props.ingredients[currentIngredient])].map ((_, i) => {
             return <BurgerIngredient key={currentIngredient + i} type={currentIngredient}></BurgerIngredient>
         });
@@ -12,6 +12,10 @@ const burger = props => {
     .reduce((arr, currentElement) => {
         return arr.concat(currentElement);
     }, []);
+
+    if(transformedIngredients.length === 0){
+        transformedIngredients = <div> Please start adding ingredients</div>;
+    }
 
     return (
         <div className={classes.Burger}>
