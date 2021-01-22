@@ -1,5 +1,6 @@
-import React from 'react'
-import classes from './OrderSummary.module.css'
+import React from 'react';
+import classes from './OrderSummary.module.css';
+import Button from './../../UI/Button/Button';
 
 
 const orderSummary = props => {
@@ -23,7 +24,10 @@ const orderSummary = props => {
             <ul>
                 {ingredientSummary}
             </ul>
+            <p> <strong> Total Price: {props.totalPrice}</strong> </p>
             <p> Continue with checkout! </p>
+            <Button clicked={props.cancelPurchase} buttonType='Danger'> Cancel </Button>
+            <Button clicked={props.continuePurchase} buttonType='Success'> Continue </Button>
         </>
     );
 };
