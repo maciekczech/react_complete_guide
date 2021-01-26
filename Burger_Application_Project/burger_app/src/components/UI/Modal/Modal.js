@@ -7,7 +7,7 @@ const modal = (props) => {
         <>
         <Backdrop
             visible={props.visible}
-            hideModalAndBackdrop={props.hideModalAndBackdrop}
+            hide={props.hideModalAndBackdrop}
         />
         <div    
             className={classes.Modal}
