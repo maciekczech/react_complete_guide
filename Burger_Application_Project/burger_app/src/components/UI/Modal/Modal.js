@@ -1,25 +1,37 @@
-import React from 'react'
+import React, {Component} from 'react'
 import Backdrop from '../Backdrop/Backdrop';
 import classes from './Modal.module.css'
 
-const modal = (props) => {
-    return (
-        <>
-        <Backdrop
-            visible={props.visible}
-            hide={props.hideModalAndBackdrop}
-        />
-        <div    
+class Modal extends Component {
+    
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.visible !== this.props.visible){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    render(){
+        return (
+            <>
+            <Backdrop
+                visible={this.props.visible}
+                hide={this.props.hideModalAndBackdrop}
+                />
+            <div
             className={classes.Modal}
             style={{
-                transform: props.visible ? 'translateY(0)' : 'translateY(-100vh)',
-                opacity: props.visible ? '1' : '0'
+                transform: this.props.visible ? 'translateY(0)' : 'translateY(-100vh)',
+                opacity: this.props.visible ? '1' : '0'
             }}
-        >
-            {props.children}
-        </div>
-        </>
-    );
+            >
+                {this.props.children}
+            </div>
+            </>
+        );
+}
 };
 
-export default modal; 
+export default Modal; 
