@@ -4,7 +4,7 @@ import Post from '../../components/Post/Post';
 import FullPost from '../../components/FullPost/FullPost';
 import NewPost from '../../components/NewPost/NewPost';
 
-import axios from 'axios'
+import axios from './../../../src/axios';
 import './Blog.css';
 
 class Blog extends Component {
@@ -25,7 +25,6 @@ class Blog extends Component {
                 }
             })
             this.setState({ posts: updatedPosts});
-            console.log(response);
         }).catch(error => {
             this.setState({ error: error });
         })};
