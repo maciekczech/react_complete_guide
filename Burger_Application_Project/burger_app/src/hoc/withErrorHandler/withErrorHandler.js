@@ -9,14 +9,19 @@ const withErrorHandler = (WrappedComponent, axios) => {
         }
         
         componentWillMount() {
-            axios.interceptors.request.use(req => {
+            this.reqInterceptor = axios.interceptors.request.use(req => {
                 this.setState({error: null});
                 return req;
             });
-            axios.interceptors.response.use(response => response, error => {
+            this.resInterceptor = axios.interceptors.response.use(response => response, error => {
                 this.setState({error: error});  
             });
-            
+        }
+
+        componentWillUnmount(){
+            //this HOC is supposed to be reused but the problem is that brand-new interceptor instances are created whenever different component is wrapped with withErrorHandler. This leads to memmory leakage, hence we want to eject interceptors every time a component is unmounted.
+            axios.interceptors.request.eject(this.reqInterceptor);
+            axios.interceptors.response.eject(this.resInterceptor);
         }
 
         errorConfirmedHandler = () => {
