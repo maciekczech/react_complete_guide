@@ -15,7 +15,6 @@ class FullPost extends Component {
             this.setState({selectedPostID: this.props.match.params.id});
             if (!this.state.post || (this.state.post && this.state.post.id !== this.props.match.params.id)){
                 axios.get('/posts/' + this.props.match.params.id).then(response => {
-                    console.log( response)
                     const fetchedPost = {
                         ...response.data
                     };
