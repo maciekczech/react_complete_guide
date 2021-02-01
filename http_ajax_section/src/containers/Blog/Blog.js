@@ -3,21 +3,20 @@ import classes from './Blog.module.css';
 
 import Posts from './../Posts/Posts'
 import NewPost from './../NewPost/NewPost'
-import {Route, Link} from 'react-router-dom';
+import {Route, NavLink} from 'react-router-dom';
 
 class Blog extends Component {
 
     render () {    
         return (
-            <div>
-                <header className={classes.Blog}>
+            <div className={classes.Blog}>
+                <header>
                     <nav>
                         <ul>
-                            <li> <Link to='/'> HOME </Link> </li>
-                            <li> <Link to={{
-                                pathname: '/new-post',
-                                search: '?asd'
-                            }}> New Post </Link></li>
+                            <li> <NavLink to='/' exact activeClassName={classes.active}> HOME </NavLink> </li>
+                            <li> <NavLink to={{
+                                pathname: '/new-post'
+                            }} exact activeClassName={classes.active}> New Post </NavLink></li>
                         </ul>
                     </nav>
                 </header>
