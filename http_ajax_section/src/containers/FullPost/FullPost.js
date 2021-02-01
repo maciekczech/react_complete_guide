@@ -7,31 +7,35 @@ class FullPost extends Component {
 
     state = {
         post: null,
+        selectedPostID: null,
     }
 
-    componentDidUpdate(){
-        if (this.props.selectedPostID){
-            if (!this.state.post || (this.state.post && this.state.post.id !== this.props.selectedPostID)){
-                axios.get('/posts/' + this.props.selectedPostID).then(response => {
+    componentDidMount(){
+        if (this.props.match.params.id){
+            this.setState({selectedPostID: this.props.match.params.id});
+            if (!this.state.post || (this.state.post && this.state.post.id !== this.props.match.params.id)){
+                axios.get('/posts/' + this.props.match.params.id).then(response => {
                     console.log( response)
                     const fetchedPost = {
                         ...response.data
                     };
                     this.setState({post: fetchedPost});
+                }).catch( error => {
+                    console.log(error)
                 });
             }
         }
     }
 
     deletePostHandler = () => {
-        axios.delete('/posts/' + this.props.selectedPostID).then(response => {
+        axios.delete('/posts/' + this.state.selectedPostID).then(response => {
             console.log(response);
         });
     }
 
     render () {
         let post = <p style={{ textAlign: 'center' }}>Please select a Post!</p>;
-        if(this.props.selectedPostID) { post = <p style={{ textAlign: 'center' }}>Loading...</p>; }
+        if(this.state.selectedPostID) { post = <p style={{ textAlign: 'center' }}>Loading...</p>; }
         if(this.state.post){
             post = (
                 <div className="FullPost">
