@@ -20,7 +20,8 @@ class NewPost extends Component {
             author: this.state.author,
         };
         axios.post('/posts/', post).then( response => {
-            this.setState({submitted: true});
+            //this.setState({submitted: true});
+            this.props.history.replace('/posts');
         });
 
     }

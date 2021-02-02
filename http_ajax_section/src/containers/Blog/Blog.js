@@ -20,9 +20,11 @@ class Blog extends Component {
                         </ul>
                     </nav>
                 </header>
-
-                <Route path='/new-post/' component={NewPost}/>
-                <Route path='/posts/' component={Posts}/>
+                <Switch>
+                    <Route path='/new-post/' component={NewPost}/>
+                    <Route path='/posts/' component={Posts}/>
+                    <Route render={() => <h1>Not Found</h1>}/>
+                </Switch>
 
             </div>
         );
