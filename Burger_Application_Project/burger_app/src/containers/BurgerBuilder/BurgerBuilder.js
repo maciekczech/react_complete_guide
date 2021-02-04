@@ -80,7 +80,7 @@ class BurgerBuilder extends Component{
     }
 
     continuePurchaseHandler = () => {
-        const order = {
+/*         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice,
             customer: {
@@ -103,6 +103,15 @@ class BurgerBuilder extends Component{
         .catch(error => {
             this.setState({error: error});
             console.log(error);
+        }); */
+        const queryParams = [];
+        for(let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + '=' + this.state.ingredients[i]);
+        }
+        const queryString = queryParams.join('&'); 
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString,
         });
 
     }
