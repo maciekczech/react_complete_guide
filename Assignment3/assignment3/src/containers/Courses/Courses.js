@@ -21,14 +21,14 @@ class Courses extends Component {
             <div>
                 <h1>Amazing Udemy Courses:</h1>
 
-                <Route path='/courses/course/:id/' component={Course} />
+                <Route path='/courses/:id/' component={Course} />
 
                 <section className="Courses">
                     {
                         this.state.courses.map( course => {
                             return(
                                 <Link  key={course.id} to={{
-                                    pathname: this.props.match.url + '/course/' + course.id,
+                                    pathname: this.props.match.url + '/' + course.id,
                                     hash: course.title,
                                 }}
                                     >
