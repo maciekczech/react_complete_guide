@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import {Link} from 'react-router-dom';
+import Course from './../Course/Course';
+
+import {Route, Link} from 'react-router-dom';
 
 import './Courses.css';
 
@@ -17,7 +19,10 @@ class Courses extends Component {
     render () {
         return (
             <div>
-                <h1>Amazing Udemy Courses</h1>
+                <h1>Amazing Udemy Courses:</h1>
+
+                <Route path='/courses/course/:id/' component={Course} />
+
                 <section className="Courses">
                     {
                         this.state.courses.map( course => {

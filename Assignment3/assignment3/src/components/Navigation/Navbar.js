@@ -8,6 +8,9 @@ const Navbar = props => {
     return (
         <ul className={classes.Navbar}>
             <li>
+                <NavLink to='/'   activeClassName={classes.active}    >Home</NavLink>
+            </li>
+            <li>
                 <NavLink to='/users'   activeClassName={classes.active}    >Users</NavLink>
             </li>
             <li>

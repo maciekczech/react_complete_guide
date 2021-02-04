@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import Courses from './containers/Courses/Courses';
-import Course from './containers/Course/Course';
 import Users from './containers/Users/Users';
 
 import Navbar from './components/Navigation/Navbar';
 
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 
 class App extends Component {
   render () {
@@ -15,9 +14,14 @@ class App extends Component {
           
           <Navbar/>
 
-          <Route path='/users/' component={Users}/>
-          <Route path='/courses/course/:id/' component={Course}/>
-          <Route path='/courses/' component={Courses}/>
+          <Switch>
+            <Route path='/users/' component={Users}/>
+            {/* <Route path='/courses/course/:id/' component={Course}/> */}
+            <Route path='/courses/' component={Courses}/>
+            <Redirect from='/all-courses' to='/courses'/>
+            <Route path='/' exact render={() => {}}/>
+            <Route render={() => <h1>Not Found</h1>} />
+          </Switch>
 
 
           <ol style={{textAlign: 'left'}}>
