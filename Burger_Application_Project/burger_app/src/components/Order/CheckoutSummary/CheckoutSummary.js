@@ -19,9 +19,9 @@ const CheckoutSummary = (props) => {
             
             <h1>We hope it tastes well!</h1>
             <div>
-                <Burger 
-                ingredients={mockIngredients}
-                style={{'width': '100%', 'margin': 'auto'}}/>
+                {props.ingredients ? <Burger
+                    ingredients={props.ingredients}
+                    style={{ 'width': '100%', 'margin': 'auto' }} /> : null}
                 
             </div>
             <Button buttonType='Danger'  clicked={props.checkoutCancelled}> Cancel </Button>

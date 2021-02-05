@@ -9,6 +9,7 @@ export default class Checkout extends Component {
     
     state = {
         ingredients: null,
+        totalPrice: null,
     }
     
     checkoutContinued = () => {
@@ -20,13 +21,18 @@ export default class Checkout extends Component {
     }
 
     componentDidMount(){
-        console.log(this.props.location.search);
         const ingredients = {}
-        const query = new URLSearchParams('?bacon=0&cheese=2&meat=2&salad=1');
+        let totalPrice = null;
+        const query = new URLSearchParams(this.props.location.search);
         for(let [name, value] of query.entries()){
-            ingredients[name]=value;
+            console.log(name);
+            if(name !== 'price'){
+                ingredients[name] = value;
+            }else{
+                totalPrice = value;
+            }
         }
-        this.setState({ingredients: ingredients})
+        this.setState({ingredients: ingredients, totalPrice: totalPrice});
     }
 
     render() {
@@ -34,13 +40,23 @@ export default class Checkout extends Component {
         return (
             <div>
                 <CheckoutSummary
-                ingredients={null}
+                ingredients={this.state.ingredients}
                 checkoutContinued={this.checkoutContinued}
                 checkoutCancelled={this.checkoutCancelled}
                 >
                 </CheckoutSummary>
 
-                <Route path={this.props.match.url + '/contact-data'} component={ContactData}/>
+                {/* rendering the component allows to easily pass the props */}
+                <Route 
+                path={this.props.match.url + '/contact-data'}
+                render={(props) => { 
+                    return <ContactData 
+                        ingredients={this.state.ingredients} 
+                        price={this.state.totalPrice}
+                        {...props}
+                        /> 
+                    }} 
+                />
 
             </div>
         )
