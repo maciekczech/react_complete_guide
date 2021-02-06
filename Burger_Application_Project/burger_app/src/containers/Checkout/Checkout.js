@@ -20,16 +20,15 @@ export default class Checkout extends Component {
         this.props.history.goBack();
     }
 
-    componentDidMount(){
+    componentWillMount(){
         const ingredients = {}
         let totalPrice = null;
         const query = new URLSearchParams(this.props.location.search);
         for(let [name, value] of query.entries()){
-            console.log(name);
             if(name !== 'price'){
-                ingredients[name] = value;
+                ingredients[name] = parseInt(value);
             }else{
-                totalPrice = value;
+                totalPrice = parseFloat(value);
             }
         }
         this.setState({ingredients: ingredients, totalPrice: totalPrice});
@@ -52,7 +51,7 @@ export default class Checkout extends Component {
                 render={(props) => { 
                     return <ContactData 
                         ingredients={this.state.ingredients} 
-                        price={this.state.totalPrice}
+                        totalPrice={this.state.totalPrice}
                         {...props}
                         /> 
                     }} 
