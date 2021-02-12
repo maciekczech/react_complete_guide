@@ -31,10 +31,20 @@ export const subtract = (payload) => {
 	};
 };
 
-export const storeResult = (payload) => {
+//sync version of an action creator
+export const saveResult = (payload) => {
 	return {
 		type: STORE_RESULT,
 		payload: { ...payload },
+	};
+};
+
+//async action creator which is possible due to redux-thunk middleware
+export const storeResult = (payload) => {
+	return (dispatch) => {
+		setTimeout(() => {
+			dispatch(saveResult(payload));
+		}, 2000);
 	};
 };
 
