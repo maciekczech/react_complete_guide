@@ -94,7 +94,7 @@ class BurgerBuilder extends Component {
 	};
 
 	continuePurchaseHandler = () => {
-		const queryParams = [];
+		/* 		const queryParams = [];
 		for (let i in this.state.ingredients) {
 			queryParams.push(
 				encodeURIComponent(i) + '=' + this.state.ingredients[i]
@@ -105,7 +105,8 @@ class BurgerBuilder extends Component {
 		this.props.history.push({
 			pathname: '/checkout',
 			search: '?' + queryString,
-		});
+		}); */
+		this.props.history.push('/checkout');
 	};
 
 	render() {

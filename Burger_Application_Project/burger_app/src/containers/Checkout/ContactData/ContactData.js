@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import Button from './../../../components/UI/Button/Button';
 import classes from './ContactData.module.css';
 
+import { connect } from 'react-redux';
+
 import axios from './../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from './../../../components/UI/Input/Input';
 
-export default class ContactData extends Component {
+class ContactData extends Component {
 	state = {
 		orderForm: {
 			name: {
@@ -99,7 +101,7 @@ export default class ContactData extends Component {
 		loading: false,
 	};
 
-	orderButtonHandler = event => {
+	orderButtonHandler = (event) => {
 		event.preventDefault();
 		this.setState({ loading: true });
 
@@ -111,18 +113,18 @@ export default class ContactData extends Component {
 		}
 
 		const currentOrder = {
-			ingredients: this.props.ingredients,
-			totalPrice: this.props.totalPrice,
+			ingredients: this.props.ings,
+			totalPrice: this.props.price,
 			contactData: formContactData,
 		};
 
 		axios
 			.post('/orders.json', currentOrder)
-			.then(response => {
+			.then((response) => {
 				this.setState({ loading: false });
 				this.props.history.push('/');
 			})
-			.catch(error => {
+			.catch((error) => {
 				this.setState({ loading: false });
 				this.setState({ error: error });
 				console.log(error);
@@ -154,7 +156,7 @@ export default class ContactData extends Component {
 		updatedFormElement.value = event.target.value;
 		updatedFormElement.valid = this.checkValidity(
 			updatedFormElement.value,
-			updatedFormElement.validationRules,
+			updatedFormElement.validationRules
 		);
 
 		updatedFormElement.touched = true;
@@ -184,8 +186,8 @@ export default class ContactData extends Component {
 					elementType={this.state.orderForm[key].elementType}
 					elementConfig={this.state.orderForm[key].elementConfig}
 					value={this.state.orderForm[key].value}
-					changed={event => this.inputChangedHandler(event, key)}
-				/>,
+					changed={(event) => this.inputChangedHandler(event, key)}
+				/>
 			);
 		}
 
@@ -198,8 +200,9 @@ export default class ContactData extends Component {
 				<form onSubmit={this.orderButtonHandler}>
 					{formInputs}
 					<Button
-						buttonType="Success"
-						disabled={!this.state.formIsValid}>
+						buttonType='Success'
+						disabled={!this.state.formIsValid}
+					>
 						{' '}
 						ORDER{' '}
 					</Button>
@@ -208,3 +211,12 @@ export default class ContactData extends Component {
 		);
 	}
 }
+
+const mapStateToProps = (state) => {
+	return {
+		ings: state.ingredients,
+		price: state.totalPrice,
+	};
+};
+
+export default connect(mapStateToProps)(ContactData);
