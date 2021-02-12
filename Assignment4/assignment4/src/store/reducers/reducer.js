@@ -10,7 +10,7 @@ export default (state = initialState, { type, payload }) => {
 			const newPerson = {
 				id: Math.random(), // not really unique but good enough here!
 				name: payload.name,
-				age: Math.floor(Math.random() * 40),
+				age: payload.age,
 			};
 			return {
 				...state,

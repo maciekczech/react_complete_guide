@@ -7,32 +7,32 @@ import AddPerson from '../components/AddPerson/AddPerson';
 import * as actionTypes from './../store/actions';
 
 class Persons extends Component {
-	/* 	personAddedHandler = () => {
-		const newPerson = {
-			id: Math.random(), // not really unique but good enough here!
-			name: 'Max',
-			age: Math.floor(Math.random() * 40),
-		};
-		this.setState((prevState) => {
-			return { persons: prevState.persons.concat(newPerson) };
-		});
+	state = {
+		inputName: '',
+		inputAge: '',
 	};
 
-	personDeletedHandler = (personId) => {
-		this.setState((prevState) => {
-			return {
-				persons: prevState.persons.filter(
-					(person) => person.id !== personId
-				),
-			};
-		});
-	}; */
+	onInputNameChangeHandler = (event) => {
+		this.setState({ inputName: event.target.value });
+	};
+	onInputAgeChangeHandler = (event) => {
+		this.setState({ inputAge: event.target.value });
+	};
 
 	render() {
 		return (
 			<div>
 				<AddPerson
-					personAdded={() => this.props.onPersonAdd('Maciej')}
+					nameChanged={this.onInputNameChangeHandler}
+					ageChanged={this.onInputAgeChangeHandler}
+					nameValue={this.state.inputName}
+					ageValue={this.state.inputAge}
+					personAdded={() =>
+						this.props.onPersonAdd(
+							this.state.inputName,
+							this.state.inputAge
+						)
+					}
 				/>
 				{this.props.persons.map((person) => (
 					<Person
@@ -55,10 +55,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onPersonAdd: (name) =>
+		onPersonAdd: (name, age) =>
 			dispatch({
 				type: actionTypes.ADD_PERSON,
-				payload: { name: name },
+				payload: { name: name, age: age },
 			}),
 		onPersonDelete: (id) =>
 			dispatch({
