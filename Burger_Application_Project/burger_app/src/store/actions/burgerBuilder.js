@@ -21,9 +21,9 @@ export const setIngredients = payload => {
 	};
 };
 
-export const setError = payload => {
+export const fetchIngredientsFailed = payload => {
 	return {
-		type: actionTypes.SET_ERROR,
+		type: actionTypes.FETCH_INGREDIENTS_FAILED,
 		payload: { ...payload },
 	};
 };
@@ -37,7 +37,7 @@ export const setInitialIngredients = () => {
 				dispatch(setIngredients({ ingredients: response.data }));
 			})
 			.catch(err => {
-				dispatch(setError());
+				dispatch(fetchIngredientsFailed());
 			});
 	};
 };
