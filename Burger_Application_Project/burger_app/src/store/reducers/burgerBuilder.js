@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from './../utility';
 
 const INGREDIENT_PRICES = {
 	salad: 0.5,
@@ -13,7 +14,7 @@ const initialState = {
 	error: false,
 };
 
-const calculateNewPrice = ingredients => {
+const calculateNewPrice = (ingredients) => {
 	let price = 0;
 	for (let key in ingredients) {
 		price += +(ingredients[key] * INGREDIENT_PRICES[key]).toFixed(2);
@@ -21,46 +22,71 @@ const calculateNewPrice = ingredients => {
 	return +price.toFixed(2);
 };
 
+const addIngredient = (state, payload) => {
+	const updatedIngredient = {
+		[payload.ingredientName]: state.ingredients[payload.ingredientName] + 1,
+	};
+	const updatedIngredients = updateObject(
+		state.ingredients,
+		updatedIngredient
+	);
+	const updatedState = {
+		ingredients: updatedIngredients,
+		totalPrice: (state.totalPrice +=
+			INGREDIENT_PRICES[payload.ingredientName]),
+	};
+
+	return updateObject(state, updatedState);
+};
+
+const removeIngredient = (state, payload) => {
+	const updatedIngredient = {
+		[payload.ingredientName]: state.ingredients[payload.ingredientName] - 1,
+	};
+	const updatedIngredients = updateObject(
+		state.ingredients,
+		updatedIngredient
+	);
+	const updatedState = {
+		ingredients: updatedIngredients,
+		totalPrice: (state.totalPrice -=
+			INGREDIENT_PRICES[payload.ingredientName]),
+	};
+
+	return updateObject(state, updatedState);
+};
+
+const setInitialIngredients = (state, payload) => {
+	const updatedStateSet = updateObject(state, {
+		ingredients: {
+			...payload.ingredients,
+		},
+		totalPrice:
+			initialState.totalPrice + calculateNewPrice(payload.ingredients),
+		error: false,
+	});
+
+	return updateObject(state, updatedStateSet);
+};
+
+const fetchIngredientsFailed = (state) => {
+	return updateObject(state, { error: true });
+};
+
 const reducer = (state = initialState, { type, payload }) => {
 	switch (type) {
 		case actionTypes.ADD_INGREDIENT:
-			return {
-				...state,
-				ingredients: {
-					...state.ingredients,
-					[payload.ingredientName]:
-						state.ingredients[payload.ingredientName] + 1,
-				},
-				totalPrice: (state.totalPrice +=
-					INGREDIENT_PRICES[payload.ingredientName]),
-			};
+			return addIngredient(state, payload);
+
 		case actionTypes.REMOVE_INGREDIENT:
-			return {
-				...state,
-				ingredients: {
-					...state.ingredients,
-					[payload.ingredientName]:
-						state.ingredients[payload.ingredientName] - 1,
-				},
-				totalPrice: (state.totalPrice -=
-					INGREDIENT_PRICES[payload.ingredientName]),
-			};
+			return removeIngredient(state, payload);
+
 		case actionTypes.SET_INITIAL_INGREDIENTS:
-			return {
-				...state,
-				ingredients: {
-					...payload.ingredients,
-				},
-				totalPrice:
-					initialState.totalPrice +
-					calculateNewPrice(payload.ingredients),
-				error: false,
-			};
+			return setInitialIngredients(state, payload);
+
 		case actionTypes.FETCH_INGREDIENTS_FAILED:
-			return {
-				...state,
-				error: true,
-			};
+			return fetchIngredientsFailed(state);
+
 		default:
 			return state;
 	}
