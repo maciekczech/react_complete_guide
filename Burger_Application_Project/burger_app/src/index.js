@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import orderReducer from './store/reducers/order';
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
+import authReducer from './store/reducers/auth';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
@@ -17,11 +18,12 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
 	order: orderReducer,
 	burgerBuilder: burgerBuilderReducer,
+	auth: authReducer,
 });
 
 const store = createStore(
 	rootReducer,
-	composeEnhancers(applyMiddleware(thunk)),
+	composeEnhancers(applyMiddleware(thunk))
 );
 
 ReactDOM.render(
@@ -30,7 +32,7 @@ ReactDOM.render(
 			<App />
 		</React.StrictMode>
 	</Provider>,
-	document.getElementById('root'),
+	document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

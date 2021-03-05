@@ -7,6 +7,7 @@ import Button from './../../components/UI/Button/Button';
 import { connect } from 'react-redux';
 
 import * as actions from './../../store/actions/allActions';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Auth extends Component {
 	state = {
@@ -41,6 +42,7 @@ class Auth extends Component {
 				touched: false,
 			},
 		},
+		signUpMode: true,
 	};
 
 	checkValidity(value, rules) {
@@ -82,19 +84,27 @@ class Auth extends Component {
 		event.preventDefault();
 		this.props.onAuth(
 			this.state.controls.email.value,
-			this.state.controls.password.value
+			this.state.controls.password.value,
+			this.state.signUpMode
 		);
+	};
+
+	switchAuthModeHandler = () => {
+		this.setState((prevState) => {
+			return { signUpMode: !prevState.signUpMode };
+		});
 	};
 
 	render() {
 		const formElementsArray = [];
+
 		for (let key in this.state.controls) {
 			formElementsArray.push({
 				id: key,
 				config: this.state.controls[key],
 			});
 		}
-		const form = formElementsArray.map((formElement) => (
+		let form = formElementsArray.map((formElement) => (
 			<Input
 				key={formElement.id}
 				formIdentifier={formElement.id}
@@ -109,25 +119,49 @@ class Auth extends Component {
 				}
 			></Input>
 		));
+		if (this.props.loading) {
+			form = <Spinner />;
+		}
+
+		let errorMessage = null;
+		if (this.props.error) {
+			errorMessage = <p>{this.props.error.data.error.message}</p>;
+		}
 		return (
 			<div className={classes.Auth}>
+				{errorMessage}
 				<form onSubmit={this.submitHandler}>
 					{form}
 					<Button buttonType='Success'>SUBMIT</Button>
 				</form>
+				<Button
+					buttonType='Danger'
+					clicked={this.switchAuthModeHandler}
+				>
+					SWITCH TO {this.state.signUpMode ? 'SIGN IN' : 'SIGN UP'}
+				</Button>
 			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state) => {
-	return {};
+	return {
+		loading: state.auth.loading,
+		error: state.auth.error,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onAuth: (email, password) => {
-			dispatch(actions.auth({ email: email, password: password }));
+		onAuth: (email, password, signUpMode) => {
+			dispatch(
+				actions.auth({
+					email: email,
+					password: password,
+					signUpMode: signUpMode,
+				})
+			);
 		},
 	};
 };
