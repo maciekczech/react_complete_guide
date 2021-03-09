@@ -15,7 +15,7 @@ export const authSuccess = (IDtoken, userID) => {
 		},
 	};
 };
-export const authFail = (error) => {
+export const authFail = error => {
 	return {
 		type: actionTypes.AUTH_FAIL,
 		payload: {
@@ -24,8 +24,22 @@ export const authFail = (error) => {
 	};
 };
 
+export const logout = () => {
+	return {
+		type: actionTypes.AUTH_LOGOUT,
+	};
+};
+
+export const checkAuthTimeout = expirationTime => {
+	return dispatch => {
+		setTimeout(() => {
+			dispatch(logout());
+		}, expirationTime * 1000);
+	};
+};
+
 export const auth = ({ email, password, signUpMode }) => {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(authStart());
 		const payload = {
 			email: email,
@@ -40,13 +54,14 @@ export const auth = ({ email, password, signUpMode }) => {
 		}
 		axios
 			.post(url, payload)
-			.then((response) => {
+			.then(response => {
 				console.log(response);
 				dispatch(
-					authSuccess(response.data.idToken, response.data.localId)
+					authSuccess(response.data.idToken, response.data.localId),
 				);
+				dispatch(checkAuthTimeout(response.data.expiresIn));
 			})
-			.catch((error) => {
+			.catch(error => {
 				console.log(error.response);
 				dispatch(authFail(error.response));
 			});
