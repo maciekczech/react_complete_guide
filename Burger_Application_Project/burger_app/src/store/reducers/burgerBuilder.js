@@ -12,9 +12,11 @@ const initialState = {
 	ingredients: null,
 	totalPrice: 4,
 	error: false,
+	//building bool indicates whether the burger is being built at the moment. It make is easy to determine whether app should save current ingredients upon redirection of unauthencticated user to the sing up page.
+	building: false,
 };
 
-const calculateNewPrice = (ingredients) => {
+const calculateNewPrice = ingredients => {
 	let price = 0;
 	for (let key in ingredients) {
 		price += +(ingredients[key] * INGREDIENT_PRICES[key]).toFixed(2);
@@ -28,12 +30,13 @@ const addIngredient = (state, payload) => {
 	};
 	const updatedIngredients = updateObject(
 		state.ingredients,
-		updatedIngredient
+		updatedIngredient,
 	);
 	const updatedState = {
 		ingredients: updatedIngredients,
 		totalPrice: (state.totalPrice +=
 			INGREDIENT_PRICES[payload.ingredientName]),
+		building: true,
 	};
 
 	return updateObject(state, updatedState);
@@ -45,31 +48,33 @@ const removeIngredient = (state, payload) => {
 	};
 	const updatedIngredients = updateObject(
 		state.ingredients,
-		updatedIngredient
+		updatedIngredient,
 	);
 	const updatedState = {
 		ingredients: updatedIngredients,
 		totalPrice: (state.totalPrice -=
 			INGREDIENT_PRICES[payload.ingredientName]),
+		building: true,
 	};
 
 	return updateObject(state, updatedState);
 };
 
 const setInitialIngredients = (state, payload) => {
-	const updatedStateSet = updateObject(state, {
+	const updatedState = updateObject(state, {
 		ingredients: {
 			...payload.ingredients,
 		},
 		totalPrice:
 			initialState.totalPrice + calculateNewPrice(payload.ingredients),
 		error: false,
+		building: false,
 	});
 
-	return updateObject(state, updatedStateSet);
+	return updateObject(state, updatedState);
 };
 
-const fetchIngredientsFailed = (state) => {
+const fetchIngredientsFailed = state => {
 	return updateObject(state, { error: true });
 };
 

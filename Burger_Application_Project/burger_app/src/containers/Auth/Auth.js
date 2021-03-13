@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import classes from './Auth.module.css';
+import axios from '././../../axios-orders';
 
 import Input from './../../components/UI/Input/Input';
 import Button from './../../components/UI/Button/Button';
 
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import * as actions from './../../store/actions/allActions';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import withErrorHandler from './../../hoc/withErrorHandler/withErrorHandler';
 
 class Auth extends Component {
 	state = {
@@ -45,6 +48,12 @@ class Auth extends Component {
 		signUpMode: true,
 	};
 
+	componentDidMount() {
+		if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+			this.props.onSetRedirectPath();
+		}
+	}
+
 	checkValidity(value, rules) {
 		//to prevent a common validation mistake we initialy set our result to true and then check for the consecutive rules making sure that we take our previous results into consideration.
 		//Sounds confusing but it comes down to checking whether the previous result was also true
@@ -72,7 +81,7 @@ class Auth extends Component {
 				value: event.target.value,
 				valid: this.checkValidity(
 					event.target.value,
-					this.state.controls[controlName].validationRules
+					this.state.controls[controlName].validationRules,
 				),
 				touched: true,
 			},
@@ -80,17 +89,17 @@ class Auth extends Component {
 		this.setState({ controls: updatedControls });
 	};
 
-	submitHandler = (event) => {
+	submitHandler = event => {
 		event.preventDefault();
 		this.props.onAuth(
 			this.state.controls.email.value,
 			this.state.controls.password.value,
-			this.state.signUpMode
+			this.state.signUpMode,
 		);
 	};
 
 	switchAuthModeHandler = () => {
-		this.setState((prevState) => {
+		this.setState(prevState => {
 			return { signUpMode: !prevState.signUpMode };
 		});
 	};
@@ -104,7 +113,7 @@ class Auth extends Component {
 				config: this.state.controls[key],
 			});
 		}
-		let form = formElementsArray.map((formElement) => (
+		let form = formElementsArray.map(formElement => (
 			<Input
 				key={formElement.id}
 				formIdentifier={formElement.id}
@@ -114,10 +123,9 @@ class Auth extends Component {
 				elementType={formElement.config.elementType}
 				elementConfig={formElement.config.elementConfig}
 				value={formElement.config.value}
-				changed={(event) =>
+				changed={event =>
 					this.inputChangedHandler(event, formElement.id)
-				}
-			></Input>
+				}></Input>
 		));
 		if (this.props.loading) {
 			form = <Spinner />;
@@ -127,17 +135,22 @@ class Auth extends Component {
 		if (this.props.error) {
 			errorMessage = <p>{this.props.error.data.error.message}</p>;
 		}
+
+		let authRedirect = null;
+		if (this.props.isAuthenticated) {
+			authRedirect = <Redirect to={this.props.authRedirectPath} />;
+		}
 		return (
 			<div className={classes.Auth}>
+				{authRedirect}
 				{errorMessage}
 				<form onSubmit={this.submitHandler}>
 					{form}
-					<Button buttonType='Success'>SUBMIT</Button>
+					<Button buttonType="Success">SUBMIT</Button>
 				</form>
 				<Button
-					buttonType='Danger'
-					clicked={this.switchAuthModeHandler}
-				>
+					buttonType="Danger"
+					clicked={this.switchAuthModeHandler}>
 					SWITCH TO {this.state.signUpMode ? 'SIGN IN' : 'SIGN UP'}
 				</Button>
 			</div>
@@ -145,14 +158,17 @@ class Auth extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	return {
 		loading: state.auth.loading,
 		error: state.auth.error,
+		isAuthenticated: state.auth.token !== null,
+		buildingBurger: state.burgerBuilder.building,
+		authRedirectPath: state.auth.authRedirectPath,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		onAuth: (email, password, signUpMode) => {
 			dispatch(
@@ -160,10 +176,18 @@ const mapDispatchToProps = (dispatch) => {
 					email: email,
 					password: password,
 					signUpMode: signUpMode,
-				})
+				}),
 			);
+		},
+
+		//calling setAuthRedirectPath from this component always resets to the main page hence hardcoded '/' value
+		onSetRedirectPath: () => {
+			dispatch(actions.setAuthRedirectPath('/'));
 		},
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(withErrorHandler(Auth, axios));
