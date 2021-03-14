@@ -115,8 +115,11 @@ class ContactData extends Component {
 
 		const currentOrder = {
 			ingredients: this.props.ings,
-			totalPrice: this.props.price,
+			totalPrice: (
+				Math.round((this.props.price + Number.EPSILON) * 100) / 100
+			).toFixed(2),
 			contactData: formContactData,
+			userID: this.props.userID,
 		};
 		this.props.onBurgerOrder(currentOrder, this.props.token);
 	};
@@ -207,6 +210,7 @@ const mapStateToProps = state => {
 		price: state.burgerBuilder.totalPrice,
 		loading: state.order.loading,
 		token: state.auth.token,
+		userID: state.auth.userID,
 	};
 };
 
