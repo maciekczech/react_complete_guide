@@ -20,20 +20,21 @@ class App extends Component {
 	render() {
 		let routes = (
 			<>
-				<Route path="/auth" component={Auth} />
-				<Route path="/" exact component={BurgerBuilder} />
-				<Redirect to="/" />
+				<Route path='/auth' component={Auth} />
+				<Route path='/' exact component={BurgerBuilder} />
+				<Redirect to='/' />
 			</>
 		);
 
 		if (this.props.isAuthenticated) {
 			routes = (
 				<>
-					<Route path="/logout" component={Logout} />
-					<Route path="/checkout" component={Checkout} />
-					<Route path="/orders" component={Orders} />
-					<Route path="/" exact component={BurgerBuilder} />
-					<Redirect to="/" />
+					<Route path='/logout' component={Logout} />
+					<Route path='/checkout' component={Checkout} />
+					<Route path='/orders' component={Orders} />
+					<Route path='/auth' component={Auth} />
+					<Route path='/' exact component={BurgerBuilder} />
+					<Redirect to='/' />
 				</>
 			);
 		}
@@ -47,13 +48,13 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return {
 		isAuthenticated: state.auth.token !== null,
 	};
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		onReloadAuthStateCheck: () => {
 			dispatch(actions.authCheckState());

@@ -4,7 +4,7 @@ import NavigationItems from './../NavigationItems/NavigationItems';
 import classes from './SideDrawer.module.css';
 import BackDrop from './../../UI/Backdrop/Backdrop';
 
-const sideDrawer = props => {
+const sideDrawer = (props) => {
 	const sideDrawerClasses = [classes.SideDrawer];
 	if (props.visible) {
 		sideDrawerClasses.push(classes.Open);
@@ -15,7 +15,7 @@ const sideDrawer = props => {
 	return (
 		<>
 			<BackDrop visible={props.visible} hide={props.hide} />
-			<div className={sideDrawerClasses.join(' ')}>
+			<div className={sideDrawerClasses.join(' ')} onClick={props.hide}>
 				<div className={classes.Logo}>
 					<Logo />
 				</div>

@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from './../utility';
+import { updateObject } from './../../shared/utility';
 
 const INGREDIENT_PRICES = {
 	salad: 0.5,
@@ -16,7 +16,7 @@ const initialState = {
 	building: false,
 };
 
-const calculateNewPrice = ingredients => {
+const calculateNewPrice = (ingredients) => {
 	let price = 0;
 	for (let key in ingredients) {
 		price += +(ingredients[key] * INGREDIENT_PRICES[key]).toFixed(2);
@@ -30,7 +30,7 @@ const addIngredient = (state, payload) => {
 	};
 	const updatedIngredients = updateObject(
 		state.ingredients,
-		updatedIngredient,
+		updatedIngredient
 	);
 	const updatedState = {
 		ingredients: updatedIngredients,
@@ -48,7 +48,7 @@ const removeIngredient = (state, payload) => {
 	};
 	const updatedIngredients = updateObject(
 		state.ingredients,
-		updatedIngredient,
+		updatedIngredient
 	);
 	const updatedState = {
 		ingredients: updatedIngredients,
@@ -74,7 +74,7 @@ const setInitialIngredients = (state, payload) => {
 	return updateObject(state, updatedState);
 };
 
-const fetchIngredientsFailed = state => {
+const fetchIngredientsFailed = (state) => {
 	return updateObject(state, { error: true });
 };
 

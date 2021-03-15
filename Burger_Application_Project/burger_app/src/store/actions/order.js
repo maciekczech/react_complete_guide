@@ -17,7 +17,7 @@ const purchaseBurgerSuccess = ({ id, orderData }) => {
 	};
 };
 
-const purchaseBurgerFailed = payload => {
+const purchaseBurgerFailed = (payload) => {
 	return {
 		type: actionTypes.PURCHASE_BURGER_FAILED,
 		payload: { ...payload },
@@ -31,19 +31,19 @@ export const purchaseBurgerStart = () => {
 };
 
 export const purchaseBurger = (payload, token) => {
-	return dispatch => {
+	return (dispatch) => {
 		dispatch(purchaseBurgerStart());
 		axios
 			.post('/orders.json?auth=' + token, payload.currentOrder)
-			.then(response => {
+			.then((response) => {
 				dispatch(
 					purchaseBurgerSuccess({
 						id: response.data.name,
 						orderData: payload.currentOrder,
-					}),
+					})
 				);
 			})
-			.catch(error => {
+			.catch((error) => {
 				dispatch(purchaseBurgerFailed({ error: error }));
 				console.log(error);
 			});
@@ -62,14 +62,14 @@ export const fetchOrdersStart = () => {
 	};
 };
 
-export const fetchOrdersSuccess = payload => {
+export const fetchOrdersSuccess = (payload) => {
 	return {
 		type: actionTypes.FETCH_ORDERS_SUCCESS,
 		payload: payload,
 	};
 };
 
-export const fetchOrdersFailed = payload => {
+export const fetchOrdersFailed = (payload) => {
 	return {
 		type: actionTypes.FETCH_ORDERS_FAILED,
 		payload: payload,
@@ -77,16 +77,15 @@ export const fetchOrdersFailed = payload => {
 };
 
 export const fetchOrders = (token, userID) => {
-	return dispatch => {
+	return (dispatch) => {
 		dispatch(fetchOrdersStart());
 		const queryParams =
 			'?auth=' + token + '&orderBy="userID"&equalTo="' + userID + '"';
 		axios
 			.get('/orders.json' + queryParams)
-			.then(response => {
-				console.log(response);
+			.then((response) => {
 				const orders = [];
-				Object.keys(response.data).forEach(orderID => {
+				Object.keys(response.data).forEach((orderID) => {
 					let order = {
 						id: null,
 						ingredients: {},
@@ -102,8 +101,7 @@ export const fetchOrders = (token, userID) => {
 				});
 				dispatch(fetchOrdersSuccess({ orders: orders }));
 			})
-			.catch(error => {
-				console.log(error);
+			.catch((error) => {
 				dispatch(fetchOrdersFailed({ error: error.response }));
 			});
 	};
