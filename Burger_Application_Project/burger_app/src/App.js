@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 
 import asyncComponent from './hoc/asyncComponent/asyncComponent';
 
 import Layout from './components/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Logout from './containers/Auth/Logout/Logout';
+
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
 import * as actions from './store/actions/allActions';
@@ -50,11 +51,9 @@ class App extends Component {
 			);
 		}
 		return (
-			<BrowserRouter>
-				<Layout>
-					<Switch>{routes}</Switch>
-				</Layout>
-			</BrowserRouter>
+			<Layout>
+				<Switch>{routes}</Switch>
+			</Layout>
 		);
 	}
 }
@@ -73,4 +72,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

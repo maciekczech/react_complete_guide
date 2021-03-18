@@ -8,6 +8,7 @@ import orderReducer from './store/reducers/order';
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import authReducer from './store/reducers/auth';
 
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 
@@ -32,7 +33,9 @@ const store = createStore(
 ReactDOM.render(
 	<Provider store={store}>
 		<React.StrictMode>
-			<App />
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
 		</React.StrictMode>
 	</Provider>,
 	document.getElementById('root')
