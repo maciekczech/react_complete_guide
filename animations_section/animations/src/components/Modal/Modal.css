@@ -14,11 +14,11 @@
 }
 
 .ModalOpen {
-	animation: openModal 0.3s linear forwards;
+	animation: openModal 0.4s linear forwards;
 }
 
 .ModalClosed {
-	animation: closeModal 0.3s linear forwards;
+	animation: closeModal 1s linear forwards;
 }
 
 @keyframes openModal {
